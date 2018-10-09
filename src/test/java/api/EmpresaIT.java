@@ -26,6 +26,11 @@ public class EmpresaIT {
         this.createEmpresa();
     }
 
+    private String createEmpresa() {
+        HttpRequest request = HttpRequest.builder().path(EmpresaApiController.EMPRESAS).body(new EmpresaDto("Dia", "Dia S.A.C")).post();
+        return (String) new Client().submit(request).getBody();
+    }
+
     @Test
     void testEmpresaInvalidRequest() {
         HttpRequest request = HttpRequest.builder().path(EmpresaApiController.EMPRESAS + "/invalid").body(null).post();
@@ -54,10 +59,22 @@ public class EmpresaIT {
                 .expandPath(id).body(new EmpresaDto("Dia business")).patch();
         new Client().submit(request);
     }
-    
-    private String createEmpresa() {
-        HttpRequest request = HttpRequest.builder().path(EmpresaApiController.EMPRESAS).body(new EmpresaDto("Dia", "Dia S.A.C")).post();
-        return (String) new Client().submit(request).getBody();
+
+    @Test
+    void testUpdateEmpresaWithoutEmpresaDto() {
+        String id = this.createEmpresa();
+        HttpRequest request = HttpRequest.builder().path(EmpresaApiController.EMPRESAS).path(EmpresaApiController.ID_ID)
+                .expandPath(id).body(null).patch();
+        HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
     }
-    
+
+    @Test
+    void testUpdateEmpresaNotFoundException() {
+        HttpRequest request = HttpRequest.builder().path(EmpresaApiController.EMPRESAS).path(EmpresaApiController.ID_ID)
+                .expandPath("s5FdeGf54D").body(new EmpresaDto("dos")).patch();
+        HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
+    }
+
 }

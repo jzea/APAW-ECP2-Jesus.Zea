@@ -1,6 +1,7 @@
 package api;
 
 import api.exceptions.ArgumentNotValidException;
+import api.exceptions.NotFoundException;
 import api.exceptions.RequestInvalidException;
 import api.apiControllers.EmpresaApiController;
 import api.dtos.EmpresaDto;
@@ -24,7 +25,7 @@ public class Dispatcher {
                 case PUT:
                     throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
                 case PATCH:
-                    this.doPatch(request, response);
+                    this.doPatch(request);
                     break;
                 case DELETE:
                     throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
@@ -34,6 +35,9 @@ public class Dispatcher {
         } catch (ArgumentNotValidException | RequestInvalidException exception) {
             response.setBody(String.format(ERROR_MESSAGE, exception.getMessage()));
             response.setStatus(HttpStatus.BAD_REQUEST);
+        } catch (NotFoundException exception) {
+            response.setBody(String.format(ERROR_MESSAGE, exception.getMessage()));
+            response.setStatus(HttpStatus.NOT_FOUND);
         } catch (Exception exception) {  // Unexpected
             exception.printStackTrace();
             response.setBody(String.format(ERROR_MESSAGE, exception));
@@ -48,13 +52,13 @@ public class Dispatcher {
             throw new RequestInvalidException("method error: " + request.getMethod());
         }
     }
-    private void doPatch(HttpRequest request, HttpResponse response) {
+
+    private void doPatch(HttpRequest request) {
         if (request.isEqualsPath(EmpresaApiController.EMPRESAS + EmpresaApiController.ID_ID)) {
             this.empresaApiController.update(request.getPath(1), (EmpresaDto) request.getBody());
         } else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }
     }
-
 
 }
