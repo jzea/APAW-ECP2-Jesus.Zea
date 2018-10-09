@@ -10,7 +10,9 @@ public class EmpresaDto {
         this.nombre = nombre;
         this.razonSocial = razonSocial;
     }
-
+    public EmpresaDto(String nombre) {
+        this.nombre = nombre;
+    }
     public String getNombre() {
         return nombre;
     }

@@ -7,6 +7,7 @@ import api.exceptions.ArgumentNotValidException;
 public class EmpresaApiController {
 
     public static final String EMPRESAS = "/empresas";
+    public static final String ID_ID = "/{id}";
 
     private EmpresaBusinessController empresaBusinessController = new EmpresaBusinessController();
 
@@ -21,5 +22,10 @@ public class EmpresaApiController {
         if (property == null) {
             throw new ArgumentNotValidException(message + " is NULL");
         }
+    }
+    public void update(String id, EmpresaDto empresaDto) {
+        this.validate(empresaDto, "empresaDto");
+        this.validate(empresaDto.getNombre(), "EmpresaDto Nombre");
+        this.empresaBusinessController.updateNombre(id, empresaDto);
     }
 }

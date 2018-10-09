@@ -24,7 +24,8 @@ public class Dispatcher {
                 case PUT:
                     throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
                 case PATCH:
-                    throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
+                    this.doPatch(request, response);
+                    break;
                 case DELETE:
                     throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
                 default:
@@ -47,5 +48,13 @@ public class Dispatcher {
             throw new RequestInvalidException("method error: " + request.getMethod());
         }
     }
+    private void doPatch(HttpRequest request, HttpResponse response) {
+        if (request.isEqualsPath(EmpresaApiController.EMPRESAS + EmpresaApiController.ID_ID)) {
+            this.empresaApiController.update(request.getPath(1), (EmpresaDto) request.getBody());
+        } else {
+            throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
+        }
+    }
+
 
 }

@@ -47,8 +47,17 @@ public class EmpresaIT {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
     }
 
+    @Test
+    void testUpdateEmpresa() {
+        String id = this.createEmpresa();
+        HttpRequest request = HttpRequest.builder().path(EmpresaApiController.EMPRESAS).path(EmpresaApiController.ID_ID)
+                .expandPath(id).body(new EmpresaDto("Dia business")).patch();
+        new Client().submit(request);
+    }
+    
     private String createEmpresa() {
         HttpRequest request = HttpRequest.builder().path(EmpresaApiController.EMPRESAS).body(new EmpresaDto("Dia", "Dia S.A.C")).post();
         return (String) new Client().submit(request).getBody();
     }
+    
 }
