@@ -9,6 +9,7 @@ import http.HttpResponse;
 import http.HttpStatus;
 
 public class Dispatcher {
+
     private EmpresaApiController empresaApiController = new EmpresaApiController();
 
     public void submit(HttpRequest request, HttpResponse response) {
@@ -38,9 +39,9 @@ public class Dispatcher {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     private void doPost(HttpRequest request, HttpResponse response) {
         if (request.isEqualsPath(EmpresaApiController.EMPRESAS)) {
-
             response.setBody(this.empresaApiController.create((EmpresaDto) request.getBody()));
         } else {
             throw new RequestInvalidException("method error: " + request.getMethod());

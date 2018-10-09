@@ -1,7 +1,9 @@
 package api.dtos;
 
 public class EmpresaDto {
+
     private String nombre;
+
     private String razonSocial;
 
     public EmpresaDto(String nombre, String razonSocial) {
@@ -24,7 +26,6 @@ public class EmpresaDto {
     public String getRazonSocial() {
         return razonSocial;
     }
-
 
     @Override
     public String toString() {

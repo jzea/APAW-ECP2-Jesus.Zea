@@ -1,8 +1,11 @@
 package api.entities;
 
 public class Empresa {
+
     private String id;
+
     private String nombre;
+
     private String razonSocial;
 
     public Empresa(String nombre, String razonSocial) {
