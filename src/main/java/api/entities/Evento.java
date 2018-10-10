@@ -3,6 +3,7 @@ package api.entities;
 import java.util.List;
 
 public class Evento {
+
     private String id;
     private String nombre;
     private String descripcion;

@@ -7,13 +7,14 @@ import api.entities.TipoEvento;
 import java.util.List;
 
 public class EventoDto {
+
     private String nombre;
     private String descripcion;
     private boolean estado;
     private TipoEvento tipoEvento;
     private String empresaId;
 
-    public EventoDto(String nombre, String descripcion, boolean estado, TipoEvento tipoEvento,String empresaId) {
+    public EventoDto(String nombre, String descripcion, boolean estado, TipoEvento tipoEvento, String empresaId) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.estado = estado;

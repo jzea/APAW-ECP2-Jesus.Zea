@@ -1,11 +1,12 @@
 package api.apiControllers;
 
-
 import api.exceptions.ArgumentNotValidException;
 import api.dtos.EventoDto;
 import api.businessController.EventoBusinessController;
+
 public class EventoApiController {
-    public static final String EVENTOS = "/eventos" ;
+
+    public static final String EVENTOS = "/eventos";
 
     private EventoBusinessController eventoBusinessController = new EventoBusinessController();
 

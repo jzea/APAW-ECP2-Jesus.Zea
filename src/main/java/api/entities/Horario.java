@@ -3,6 +3,7 @@ package api.entities;
 import java.time.LocalDateTime;
 
 public class Horario {
+
     private String id;
     private LocalDateTime inicio;
     private LocalDateTime fin;

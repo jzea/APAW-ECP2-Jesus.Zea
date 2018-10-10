@@ -1,7 +1,6 @@
 package api;
 
 import api.apiControllers.EventoApiController;
-import api.entities.Evento;
 import api.exceptions.ArgumentNotValidException;
 import api.exceptions.NotFoundException;
 import api.exceptions.RequestInvalidException;
