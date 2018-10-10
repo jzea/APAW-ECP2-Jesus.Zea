@@ -25,20 +25,25 @@ public class EventoIT {
         DaoFactory.setFactory(new DaoMemoryFactory());
     }
 
+
     private String createEmpresa() {
         HttpRequest request = HttpRequest.builder().path(EmpresaApiController.EMPRESAS).body(new EmpresaDto("Dia", "Dia S.A.C")).post();
         return (String) new Client().submit(request).getBody();
     }
 
-    @Test
-    void createEvento() {
+    private void createEvento(String name, String descripcion) {
         String empresaId = this.createEmpresa();
         HttpRequest request = HttpRequest.builder().path(EventoApiController.EVENTOS)
-                .body(new EventoDto("Campeonato de futbol","Evento para socializar",true, TipoEvento.DEPORTIVO, empresaId)).post();
+                .body(new EventoDto(name,descripcion,true, TipoEvento.DEPORTIVO, empresaId)).post();
         new Client().submit(request);
     }
+
     @Test
-    void createEventoEmpresaIdNotFound() {
+    void testCreateEvento() {
+        this.createEvento("Campeonato de futbol","Evento para socializar");
+    }
+    @Test
+    void testCreateEventoEmpresaIdNotFound() {
         HttpRequest request = HttpRequest.builder().path(EventoApiController.EVENTOS)
                 .body(new EventoDto("Evento one","Description one",true, TipoEvento.CULTURAL, "asdasd")).post();
         HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
@@ -46,7 +51,7 @@ public class EventoIT {
     }
 
     @Test
-    void createEventoWithoutTipoEvento() {
+    void testCreateEventoWithoutTipoEvento() {
         HttpRequest request = HttpRequest.builder().path(EventoApiController.EVENTOS)
                 .body(new EventoDto("Evento one","Description one", true, null, "h3rFdEsw")).post();
         HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
