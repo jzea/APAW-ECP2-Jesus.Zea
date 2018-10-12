@@ -1,14 +1,14 @@
-package api.entities;
+package api.dtos;
 
 import java.time.LocalDateTime;
 
-public class Horario {
+public class HorarioDto {
 
     private LocalDateTime inicio;
 
     private LocalDateTime fin;
 
-    public Horario(LocalDateTime inicio, LocalDateTime fin) {
+    public HorarioDto(LocalDateTime inicio, LocalDateTime fin) {
         this.inicio = inicio;
         this.fin = fin;
     }
@@ -31,7 +31,7 @@ public class Horario {
 
     @Override
     public String toString() {
-        return "Horario{" +
+        return "HorarioDto{" +
                 "inicio=" + inicio +
                 ", fin=" + fin +
                 '}';

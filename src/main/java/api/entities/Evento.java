@@ -1,5 +1,6 @@
 package api.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Evento {
@@ -19,6 +20,7 @@ public class Evento {
         this.estado = estado;
         this.tipoEvento = tipoEvento;
         this.empresa = empresa;
+        this.horarios = new ArrayList<>();
     }
 
     public String getId() {

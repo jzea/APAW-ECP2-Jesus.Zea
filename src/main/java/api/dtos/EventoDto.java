@@ -1,10 +1,7 @@
 package api.dtos;
 
-import api.entities.Empresa;
-import api.entities.Horario;
 import api.entities.TipoEvento;
 
-import java.util.List;
 
 public class EventoDto {
 

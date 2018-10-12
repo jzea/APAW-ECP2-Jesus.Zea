@@ -6,6 +6,7 @@ import api.daos.DaoFactory;
 import api.daos.memory.DaoMemoryFactory;
 import api.dtos.EventoDto;
 import api.dtos.EmpresaDto;
+import api.dtos.HorarioDto;
 import api.entities.TipoEvento;
 import http.Client;
 import http.HttpException;
@@ -14,11 +15,14 @@ import http.HttpStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import api.dtos.EventoNombreDescripcionDto;
+
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDateTime;
 
 public class EventoIT {
 
@@ -78,6 +82,24 @@ public class EventoIT {
         HttpRequest request2 = HttpRequest.builder().path(EventoApiController.EVENTOS).path(EmpresaApiController.ID_ID)
                 .expandPath(id).delete();
         new Client().submit(request2);
-        assertTrue(((List<EventoNombreDescripcionDto>) new Client().submit(request1).getBody()).size()<count);
+        assertTrue(((List<EventoNombreDescripcionDto>) new Client().submit(request1).getBody()).size() < count);
     }
+
+    @Test
+    void testHorarioEvento() {
+        String id = this.createEvento("Campeonato de futbol", "Evento para socializar");
+        HttpRequest request = HttpRequest.builder().path(EventoApiController.EVENTOS).path(EmpresaApiController.ID_ID)
+                .expandPath(id).path(EventoApiController.HORARIOS).body(new HorarioDto(LocalDateTime.of(2018, 10, 12, 14, 30), LocalDateTime.of(2018, 10, 12, 20, 30))).post();
+        new Client().submit(request);
+        new Client().submit(request);
+    }
+
+    @Test
+    void testHorarioEventoEventoIdNotFound() {
+        HttpRequest request = HttpRequest.builder().path(EventoApiController.EVENTOS).path(EmpresaApiController.ID_ID)
+                .expandPath("h3rFdEsw").path(EventoApiController.HORARIOS).body(new HorarioDto(LocalDateTime.of(2018, 10, 12, 14, 30), LocalDateTime.of(2018, 10, 12, 20, 30))).post();
+        HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
+    }
+
 }

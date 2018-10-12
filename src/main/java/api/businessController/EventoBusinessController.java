@@ -6,6 +6,8 @@ import api.dtos.EventoNombreDescripcionDto;
 import api.entities.Evento;
 import api.entities.Empresa;
 import api.exceptions.NotFoundException;
+import api.dtos.HorarioDto;
+import api.entities.Horario;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +30,13 @@ public class EventoBusinessController {
 
     public void delete(String id) {
         DaoFactory.getFactory().eventoDao().deleteById(id);
+    }
+
+    public void createHorario(String eventoId, HorarioDto horarioDto) {
+        Evento evento = DaoFactory.getFactory().eventoDao().read(eventoId)
+                .orElseThrow(() -> new NotFoundException("Evento (" + eventoId + ")"));
+        evento.getHorarios().add(new Horario(horarioDto.getInicio(), horarioDto.getFin()));
+        DaoFactory.getFactory().eventoDao().save(evento);
     }
 
 }
