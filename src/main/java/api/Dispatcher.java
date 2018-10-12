@@ -1,6 +1,7 @@
 package api;
 
 import api.apiControllers.EventoApiController;
+import api.dtos.HorarioDto;
 import api.exceptions.ArgumentNotValidException;
 import api.exceptions.NotFoundException;
 import api.exceptions.RequestInvalidException;
@@ -55,6 +56,8 @@ public class Dispatcher {
             response.setBody(this.empresaApiController.create((EmpresaDto) request.getBody()));
         } else if (request.isEqualsPath(EventoApiController.EVENTOS)) {
             response.setBody(this.eventoApiController.create((EventoDto) request.getBody()));
+        } else if (request.isEqualsPath(EventoApiController.EVENTOS + EventoApiController.ID_ID + EventoApiController.HORARIOS)) {
+            this.eventoApiController.createHorario(request.getPath(1), (HorarioDto) request.getBody());
         } else {
             throw new RequestInvalidException("method error: " + request.getMethod());
         }

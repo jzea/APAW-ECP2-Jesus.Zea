@@ -1,5 +1,6 @@
 package api.apiControllers;
 
+import api.dtos.HorarioDto;
 import api.exceptions.ArgumentNotValidException;
 import api.dtos.EventoDto;
 import api.businessController.EventoBusinessController;
@@ -12,6 +13,8 @@ public class EventoApiController {
     public static final String EVENTOS = "/eventos";
 
     public static final String ID_ID = "/{id}";
+
+    public static final String HORARIOS = "/horarios";
 
     private EventoBusinessController eventoBusinessController = new EventoBusinessController();
 
@@ -31,6 +34,12 @@ public class EventoApiController {
 
     public void delete(String id) {
         this.eventoBusinessController.delete(id);
+    }
+
+    public void createHorario(String eventoId, HorarioDto horarioDto) {
+        this.validate(horarioDto.getInicio(), "horarioDto inicio");
+        this.validate(horarioDto.getFin(), "horarioDto fin");
+        this.eventoBusinessController.createHorario(eventoId, horarioDto);
     }
 
     private void validate(Object property, String message) {
