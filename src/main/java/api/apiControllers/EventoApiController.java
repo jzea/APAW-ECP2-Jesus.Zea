@@ -11,6 +11,8 @@ public class EventoApiController {
 
     public static final String EVENTOS = "/eventos";
 
+    public static final String ID_ID = "/{id}";
+
     private EventoBusinessController eventoBusinessController = new EventoBusinessController();
 
     public String create(EventoDto eventoDto) {
@@ -25,6 +27,10 @@ public class EventoApiController {
 
     public List<EventoNombreDescripcionDto> readAll() {
         return this.eventoBusinessController.readAll();
+    }
+
+    public void delete(String id) {
+        this.eventoBusinessController.delete(id);
     }
 
     private void validate(Object property, String message) {

@@ -32,11 +32,11 @@ public class EventoIT {
         return (String) new Client().submit(request).getBody();
     }
 
-    private void createEvento(String name, String descripcion) {
+    private String createEvento(String name, String descripcion) {
         String empresaId = this.createEmpresa();
         HttpRequest request = HttpRequest.builder().path(EventoApiController.EVENTOS)
                 .body(new EventoDto(name, descripcion, true, TipoEvento.DEPORTIVO, empresaId)).post();
-        new Client().submit(request);
+        return (String) new Client().submit(request).getBody();
     }
 
     @Test
@@ -68,5 +68,16 @@ public class EventoIT {
         HttpRequest request = HttpRequest.builder().path(EventoApiController.EVENTOS).get();
         List<EventoNombreDescripcionDto> eventos = (List<EventoNombreDescripcionDto>) new Client().submit(request).getBody();
         assertTrue(eventos.size() >= 5);
+    }
+
+    @Test
+    void testDelete() {
+        String id = this.createEvento("Campeonato de futbol", "Evento para socializar");
+        HttpRequest request1 = HttpRequest.builder().path(EventoApiController.EVENTOS).get();
+        int count = ((List<EventoNombreDescripcionDto>) new Client().submit(request1).getBody()).size();
+        HttpRequest request2 = HttpRequest.builder().path(EventoApiController.EVENTOS).path(EmpresaApiController.ID_ID)
+                .expandPath(id).delete();
+        new Client().submit(request2);
+        assertTrue(((List<EventoNombreDescripcionDto>) new Client().submit(request1).getBody()).size()<count);
     }
 }

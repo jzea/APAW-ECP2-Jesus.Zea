@@ -26,4 +26,8 @@ public class EventoBusinessController {
         ).collect(Collectors.toList());
     }
 
+    public void delete(String id) {
+        DaoFactory.getFactory().eventoDao().deleteById(id);
+    }
+
 }
