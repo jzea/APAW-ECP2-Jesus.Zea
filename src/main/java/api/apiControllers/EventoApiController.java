@@ -3,6 +3,9 @@ package api.apiControllers;
 import api.exceptions.ArgumentNotValidException;
 import api.dtos.EventoDto;
 import api.businessController.EventoBusinessController;
+import api.dtos.EventoNombreDescripcionDto;
+
+import java.util.List;
 
 public class EventoApiController {
 
@@ -18,6 +21,10 @@ public class EventoApiController {
         this.validate(eventoDto.getTipoEvento(), "eventoDto tipo evento");
         this.validate(eventoDto.getEmpresaId(), "eventoDto empresa id");
         return eventoBusinessController.create(eventoDto);
+    }
+
+    public List<EventoNombreDescripcionDto> readAll() {
+        return this.eventoBusinessController.readAll();
     }
 
     private void validate(Object property, String message) {
