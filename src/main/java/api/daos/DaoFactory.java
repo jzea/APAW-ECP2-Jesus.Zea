@@ -16,4 +16,6 @@ public abstract class DaoFactory {
     public abstract EmpresaDao getEmpresaDao();
 
     public abstract EventoDao eventoDao();
+
+    public abstract ComentarioDao getComentarioDao();
 }
