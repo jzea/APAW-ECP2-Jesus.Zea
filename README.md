@@ -3,7 +3,7 @@
 > #### [Máster en Ingeniería Web por la Universidad Politécnica de Madrid (miw-upm)](http://miw.etsisi.upm.es)
 > #### Asignatura: *Arquitectura y Patrones para Aplicaciones Web*
 
-[![Build Status](https://travis-ci.org/jzea/APAW-ECP2-Jesus.Zea.svg?branch=master)](https://travis-ci.org/jzea/APAW-ECP2-Jesus.Zea)
+[![Build Status](https://travis-ci.org/jzea/APAW-ECP2-Jesus.Zea.svg?branch=develop)](https://travis-ci.org/jzea/APAW-ECP2-Jesus.Zea)
 
 ## Tecnologías necesarias
 * Java
@@ -17,7 +17,7 @@
 ### POST / empresas
 #### Parámetros del cuerpo
 - `nombre`: String (**requerido**)
-- `razonSocial`: String (** required **)
+- `razonSocial`: String (**requerido**)
 #### Respuesta
 - 200 ok 
   - `id`: cadena
@@ -29,7 +29,7 @@
 #### Respuesta
 - 200 ok 
 - 403 BAD_REQUEST
-- 404 NO ENCONTRADO
+- 404 NOT_FOUND
 --- 
 ### POST /eventos
 #### Parámetros del cuerpo
@@ -42,7 +42,7 @@
 - 200 ok 
   - `id`: cadena
 - 403 BAD_REQUEST
-- 404 NO ENCONTRADO
+- 404 NOT_FOUND
 ---
 ### GET /eventos
 #### Respuesta
@@ -60,7 +60,7 @@
 #### Respuesta
 - 200 ok 
 - 403 BAD_REQUEST
-- 404 NO ENCONTRADO
+- 404 NOT_FOUND
 ---
 ### GET /eventos/search?q=estado:=true
 #### Respuesta
@@ -83,5 +83,5 @@
 #### Respuesta
 - 200 ok 
 - 403 BAD_REQUEST
-- 404 NO ENCONTRADO
+- 404 NOT_FOUND
 --- 
