@@ -23,36 +23,36 @@ public class EventoDto {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public String getDescripcion() {
         return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 
     public boolean isEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
-        this.estado = estado;
-    }
-
     public TipoEvento getTipoEvento() {
         return tipoEvento;
     }
 
-    public void setTipoEvento(TipoEvento tipoEvento) {
-        this.tipoEvento = tipoEvento;
-    }
-
     public String getEmpresaId() {
         return empresaId;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
+    public void setTipoEvento(TipoEvento tipoEvento) {
+        this.tipoEvento = tipoEvento;
     }
 
     public void setEmpresaId(String empresaId) {

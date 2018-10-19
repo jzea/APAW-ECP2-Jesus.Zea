@@ -31,7 +31,8 @@ public class Dispatcher {
                     this.doGet(request, response);
                     break;
                 case PUT:
-                    throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
+                    this.doPut(request);
+                    break;
                 case PATCH:
                     this.doPatch(request);
                     break;
@@ -89,6 +90,14 @@ public class Dispatcher {
     private void doDelete(HttpRequest request) {
         if (request.isEqualsPath(EventoApiController.EVENTOS + EventoApiController.ID_ID)) {
             this.eventoApiController.delete(request.getPath(1));
+        } else {
+            throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
+        }
+    }
+    
+    private void doPut(HttpRequest request) {
+        if (request.isEqualsPath(ComentarioApiController.COMENTARIOS + ComentarioApiController.ID_ID)) {
+            this.comentarioApiController.update(request.getPath(1), (ComentarioDto) request.getBody());
         } else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }

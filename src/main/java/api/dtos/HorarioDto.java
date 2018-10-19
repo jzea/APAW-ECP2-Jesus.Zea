@@ -17,12 +17,12 @@ public class HorarioDto {
         return inicio;
     }
 
-    public void setInicio(LocalDateTime inicio) {
-        this.inicio = inicio;
-    }
-
     public LocalDateTime getFin() {
         return fin;
+    }
+
+    public void setInicio(LocalDateTime inicio) {
+        this.inicio = inicio;
     }
 
     public void setFin(LocalDateTime fin) {

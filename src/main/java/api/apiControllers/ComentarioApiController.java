@@ -8,6 +8,8 @@ public class ComentarioApiController {
 
     public static final String COMENTARIOS = "/comentarios";
 
+    public static final String ID_ID = "/{id}";
+
     private ComentarioBusinessController comentarioBusinessController = new ComentarioBusinessController();
 
     public String create(ComentarioDto comentarioDto) {
@@ -17,6 +19,13 @@ public class ComentarioApiController {
         return this.comentarioBusinessController.create(comentarioDto);
     }
 
+    public void update(String id, ComentarioDto comentarioDto) {
+        this.validate(comentarioDto, "comentarioDto");
+        this.validate(comentarioDto.getTitulo(), "ComentarioDto Titulo");
+        this.validate(comentarioDto.getDescripcion(), "ComentarioDto Descripción");
+        this.comentarioBusinessController.update(id, comentarioDto);
+    }
+    
     private void validate(Object property, String message) {
         if (property == null) {
             throw new ArgumentNotValidException(message + " is NULL");
