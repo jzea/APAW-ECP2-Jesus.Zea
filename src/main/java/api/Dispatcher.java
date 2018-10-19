@@ -1,6 +1,8 @@
 package api;
 
+import api.apiControllers.ComentarioApiController;
 import api.apiControllers.EventoApiController;
+import api.dtos.ComentarioDto;
 import api.dtos.HorarioDto;
 import api.exceptions.ArgumentNotValidException;
 import api.exceptions.NotFoundException;
@@ -16,6 +18,7 @@ public class Dispatcher {
 
     private EmpresaApiController empresaApiController = new EmpresaApiController();
     private EventoApiController eventoApiController = new EventoApiController();
+    private ComentarioApiController comentarioApiController = new ComentarioApiController();
 
     public void submit(HttpRequest request, HttpResponse response) {
         String ERROR_MESSAGE = "{'error':'%S'}";
@@ -58,6 +61,8 @@ public class Dispatcher {
             response.setBody(this.eventoApiController.create((EventoDto) request.getBody()));
         } else if (request.isEqualsPath(EventoApiController.EVENTOS + EventoApiController.ID_ID + EventoApiController.HORARIOS)) {
             this.eventoApiController.createHorario(request.getPath(1), (HorarioDto) request.getBody());
+        } else if (request.isEqualsPath(ComentarioApiController.COMENTARIOS)) {
+            response.setBody(this.comentarioApiController.create((ComentarioDto) request.getBody()));
         } else {
             throw new RequestInvalidException("method error: " + request.getMethod());
         }
