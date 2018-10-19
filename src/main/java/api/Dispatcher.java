@@ -74,6 +74,8 @@ public class Dispatcher {
     private void doGet(HttpRequest request, HttpResponse response) {
         if (request.isEqualsPath(EventoApiController.EVENTOS)) {
             response.setBody(this.eventoApiController.readAll());
+        } else if (request.isEqualsPath(EventoApiController.EVENTOS + EventoApiController.SEARCH)) {
+            response.setBody(this.eventoApiController.find(request.getParams().get("q")));
         } else {
             throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
         }

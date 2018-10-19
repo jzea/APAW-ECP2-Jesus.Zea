@@ -16,6 +16,8 @@ public class EventoApiController {
 
     public static final String HORARIOS = "/horarios";
 
+    public static final String SEARCH = "/search";
+
     private EventoBusinessController eventoBusinessController = new EventoBusinessController();
 
     public String create(EventoDto eventoDto) {
@@ -40,6 +42,14 @@ public class EventoApiController {
         this.validate(horarioDto.getInicio(), "horarioDto inicio");
         this.validate(horarioDto.getFin(), "horarioDto fin");
         this.eventoBusinessController.createHorario(eventoId, horarioDto);
+    }
+
+    public List<EventoNombreDescripcionDto> find(String query) {
+        this.validate(query, "query param q");
+        if (!"estado".equals(query.split(":=")[0])) {
+            throw new ArgumentNotValidException("query param q is incorrect, missing 'estado:='");
+        }
+        return this.eventoBusinessController.findByEstado(Boolean.valueOf(query.split(":=")[1]));
     }
 
     private void validate(Object property, String message) {

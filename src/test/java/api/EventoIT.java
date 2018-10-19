@@ -18,11 +18,9 @@ import api.dtos.EventoNombreDescripcionDto;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class EventoIT {
 
@@ -36,16 +34,16 @@ public class EventoIT {
         return (String) new Client().submit(request).getBody();
     }
 
-    private String createEvento(String name, String descripcion) {
+    private String createEvento(String name, String descripcion, Boolean estado) {
         String empresaId = this.createEmpresa();
         HttpRequest request = HttpRequest.builder().path(EventoApiController.EVENTOS)
-                .body(new EventoDto(name, descripcion, true, TipoEvento.DEPORTIVO, empresaId)).post();
+                .body(new EventoDto(name, descripcion, estado, TipoEvento.DEPORTIVO, empresaId)).post();
         return (String) new Client().submit(request).getBody();
     }
 
     @Test
     void testCreateEvento() {
-        this.createEvento("Campeonato de futbol", "Evento para socializar");
+        this.createEvento("Campeonato de futbol", "Evento para socializar", true);
     }
 
     @Test
@@ -67,7 +65,7 @@ public class EventoIT {
     @Test
     void testReadAll() {
         for (int i = 0; i < 5; i++) {
-            this.createEvento("evento" + i, "evento descripción " + i);
+            this.createEvento("evento" + i, "evento descripción " + i, true);
         }
         HttpRequest request = HttpRequest.builder().path(EventoApiController.EVENTOS).get();
         List<EventoNombreDescripcionDto> eventos = (List<EventoNombreDescripcionDto>) new Client().submit(request).getBody();
@@ -76,7 +74,7 @@ public class EventoIT {
 
     @Test
     void testDelete() {
-        String id = this.createEvento("Campeonato de futbol", "Evento para socializar");
+        String id = this.createEvento("Campeonato de futbol", "Evento para socializar", true);
         HttpRequest request1 = HttpRequest.builder().path(EventoApiController.EVENTOS).get();
         int count = ((List<EventoNombreDescripcionDto>) new Client().submit(request1).getBody()).size();
         HttpRequest request2 = HttpRequest.builder().path(EventoApiController.EVENTOS).path(EmpresaApiController.ID_ID)
@@ -87,7 +85,7 @@ public class EventoIT {
 
     @Test
     void testHorarioEvento() {
-        String id = this.createEvento("Campeonato de futbol", "Evento para socializar");
+        String id = this.createEvento("Campeonato de futbol", "Evento para socializar", true);
         HttpRequest request = HttpRequest.builder().path(EventoApiController.EVENTOS).path(EmpresaApiController.ID_ID)
                 .expandPath(id).path(EventoApiController.HORARIOS).body(new HorarioDto(LocalDateTime.of(2018, 10, 12, 14, 30), LocalDateTime.of(2018, 10, 12, 20, 30))).post();
         new Client().submit(request);
@@ -102,4 +100,33 @@ public class EventoIT {
         assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
     }
 
+    @Test
+    void testSearchEstado() {
+        this.createEvento("Evento 1", "Descripción 1", true);
+        this.createEvento("Evento 2", "Descripción 2", false);
+        HttpRequest request = HttpRequest.builder().path(EventoApiController.EVENTOS).path(EventoApiController.SEARCH)
+                .param("q", "estado:=true").get();
+        List<EventoNombreDescripcionDto> eventos = (List<EventoNombreDescripcionDto>) new Client().submit(request).getBody();
+        assertFalse(eventos.isEmpty());
+    }
+
+    @Test
+    void testSearchEstadoWithoutParamQ() {
+        this.createEvento("Evento 1", "Descripción 1", true);
+        this.createEvento("Evento 2", "Descripción 2", false);
+        HttpRequest request = HttpRequest.builder().path(EventoApiController.EVENTOS).path(EventoApiController.SEARCH)
+                .param("error", "estado:=true").get();
+        HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
+    }
+
+    @Test
+    void testSearchEstadoParamError() {
+        this.createEvento("Evento 1", "Descripción 1", true);
+        this.createEvento("Evento 2", "Descripción 2", false);
+        HttpRequest request = HttpRequest.builder().path(EventoApiController.EVENTOS).path(EventoApiController.SEARCH)
+                .param("q", "error:=true").get();
+        HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
+    }
 }

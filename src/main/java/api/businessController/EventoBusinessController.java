@@ -39,4 +39,10 @@ public class EventoBusinessController {
         DaoFactory.getFactory().eventoDao().save(evento);
     }
 
+    public List<EventoNombreDescripcionDto> findByEstado(Boolean value) {
+        return DaoFactory.getFactory().eventoDao().findAll().stream()
+                .filter(evento -> evento.isEstado() == value)
+                .map(EventoNombreDescripcionDto::new)
+                .collect(Collectors.toList());
+    }
 }
