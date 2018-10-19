@@ -44,4 +44,29 @@ class ComentarioIT {
         HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
     }
+
+    @Test
+    void testUpdateComentario() {
+        String id = this.createComentario();
+        HttpRequest request = HttpRequest.builder().path(ComentarioApiController.COMENTARIOS).path(ComentarioApiController.ID_ID)
+                .expandPath(id).body(new ComentarioDto("Titulo 2", "Descripción 2")).put();
+        new Client().submit(request);
+    }
+
+    @Test
+    void testUpdateComentarioWithoutComentarioDto() {
+        String id = this.createComentario();
+        HttpRequest request = HttpRequest.builder().path(ComentarioApiController.COMENTARIOS).path(ComentarioApiController.ID_ID)
+                .expandPath(id).body(null).put();
+        HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
+    }
+
+    @Test
+    void testUpdateComentarioNotFoundException() {
+        HttpRequest request = HttpRequest.builder().path(ComentarioApiController.COMENTARIOS).path(ComentarioApiController.ID_ID)
+                .expandPath("s5FdeGf54D").body(new ComentarioDto("Titulo 2", "Descripción 2")).put();
+        HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
+    }
 }
